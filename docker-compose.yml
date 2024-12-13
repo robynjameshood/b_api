@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  app-bdcp:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: bdcp
+    ports:
+      - 8095:80
+    volumes:
+      - .:/var/www/html
+    links:
+      - mysql-bdcp
+    environment:
+      DB_HOST: mysql-bdcp
+      DB_DATABASE: docker-bdcp
+      DB_USERNAME: localdev
+      DB_PASSWORD: Harrogate1
+      PUBLISHER_URL:
+    env_file:
+      - .env
+    tty: true
+
+  mysql-bdcp:
+    image: mysql:5.7
+    ports:
+      - 13315:3306
+    environment:
+      MYSQL_DATABASE: docker-bdcp
+      MYSQL_USER: localdev
+      MYSQL_PASSWORD: Harrogate1
+      MYSQL_ROOT_PASSWORD: Harrogate1
